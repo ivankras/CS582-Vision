@@ -1,0 +1,42 @@
+\documentclass[titlepage, 11pt]{article}
+\input{preamble.tex}
+
+\title{
+	\textbf{Project 1: Movie Recommender System} \\
+	Machine learning (CS582), MIU \thanks{Instructor: Anthony Sander}
+}
+
+\author{
+    Baraa Mousa Noufal \and Iván Krasowski Bissio
+        \and Muzammil Husnain \and Umair Saeed
+}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\begin{abstract}
+	\addcontentsline{toc}{section}{Abstract}
+	\input{abstract.tex}
+\end{abstract}
+
+\section{About the Dataset}
+% Write something about ImageNet
+
+\subsection{EDA: Exploratory Data Analysis}
+\input{sections/dataset/eda.tex}
+
+\section{Image Style Transfer}
+\input{sections/ml/style.tex}
+
+\section{In Production}
+\subsection{RESTful API}
+\input{sections/production/api.tex}
+\subsection{Docker}
+\input{sections/production/docker.tex}
+\clearpage
+\section{Conclusion}
+\input{conclusion.tex}
+
+\end{document}
