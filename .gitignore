@@ -35,6 +35,4 @@ venv/
 
 __pycache__/
 
-images/
 team.txt
-*.png
