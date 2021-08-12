@@ -2,6 +2,7 @@ import os
 import service as service
 from flask import Flask, request, send_file
 from flask_cors import CORS, cross_origin
+import base64
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -14,11 +15,12 @@ def getResult():
     Get input image urls and return result of trained model
     """
     urls = request.json
+    
     return send_file(service.train_and_get_result(urls), mimetype='image/png')
 
 @app.route('/api/getDefault', methods=['POST'])
 @cross_origin()
-def getResult():
+def getDefault():
     """
     Get input image urls and return result of trained model
     """
