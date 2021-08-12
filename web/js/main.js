@@ -52,8 +52,6 @@ function display_result(src) {
 
 function request_server() {
 
-    const axios = require('axios').default;
-
     const first_url = document.getElementById("firstimgUrl").value
     const second_url = document.getElementById("secondimgUrl").value
     const num_of_itr = document.getElementById("iterationRange").value
