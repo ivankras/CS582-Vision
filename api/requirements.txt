@@ -1,0 +1,8 @@
+keras
+Pillow
+tensorflow
+tensorflow-gpu
+numpy
+flask
+flask-cors
+IPython

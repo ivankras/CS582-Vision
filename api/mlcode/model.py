@@ -2,18 +2,14 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.applications import vgg19
 from IPython.display import Image, display
+import numpy as np
 
-from img_utils import (
-    preprocess_image,
-    deprocess_image
-)
-from losses import compute_loss_and_grads
-
+from mlcode.losses import compute_loss_and_grads
 class StyleTransfer:
     def __init__(self,
-            base_image_name='content.jpg', base_image_url='https://i.imgur.com/FPHjb7s.jpg',
-            style_image_name='style.jpg', style_image_url='https://i.imgur.com/y9dH2bJ.jpeg',
-            result_prefix='lunch_generated',
+            base_image_name, base_image_url,
+            style_image_name, style_image_url,
+            result_prefix='generated',
             total_variation_weight=1e-6,
             style_weight=1e-6,
             content_weight=2.5e-8,
@@ -25,9 +21,8 @@ class StyleTransfer:
         self._base_image_url = base_image_url
         self._style_image_name = style_image_name
         self._style_image_url = style_image_url
-
         self._base_image_path = keras.utils.get_file(base_image_name, base_image_url)
-        self._style_reference_image_path = keras.utils.get_file(style_image_name, style_image_url)
+        self._style_reference_image_path = keras.utils.get_file(self._style_image_name, self._style_image_url)
         self._result_prefix = result_prefix
 
         # Weights of the different loss components
@@ -53,7 +48,30 @@ class StyleTransfer:
 
         self._hasResults = False
 
-    def setupModel(self, iterations=4000):
+    def preprocess_image(self, image_path, img_nrows, img_ncols):
+        # Util function to open, resize and format pictures into appropriate tensors
+        img = keras.preprocessing.image.load_img(
+        image_path, target_size=(img_nrows, img_ncols)
+        )
+        img = keras.preprocessing.image.img_to_array(img)
+        img = np.expand_dims(img, axis=0)
+        img = vgg19.preprocess_input(img)
+        return tf.convert_to_tensor(img)
+
+
+    def deprocess_image(self, x, img_nrows, img_ncols):
+        # Util function to convert a tensor into a valid image
+        x = x.reshape((img_nrows, img_ncols, 3))
+        # Remove zero-center by mean pixel
+        x[:, :, 0] += 103.939
+        x[:, :, 1] += 116.779
+        x[:, :, 2] += 123.68
+        # 'BGR'->'RGB'
+        x = x[:, :, ::-1]
+        x = np.clip(x, 0, 255).astype("uint8")
+        return x
+
+    def setupModel(self, iterations=500):
         # Build a VGG19 model loaded with pre-trained ImageNet weights
         self._model = vgg19.VGG19(weights="imagenet", include_top=False)
 
@@ -70,11 +88,13 @@ class StyleTransfer:
             )
         )
 
-        self._base_image = preprocess_image(self._base_image_path, self._img_nrows, self._img_ncols)
-        self._style_reference_image = preprocess_image(self._style_reference_image_path, self._img_nrows, self._img_ncols)
-        self._combination_image = tf.Variable(preprocess_image(self._base_image_path, self._img_nrows, self._img_ncols))
+        self._base_image = self.preprocess_image(self._base_image_path, self._img_nrows, self._img_ncols)
+        self._style_reference_image = self.preprocess_image(self._style_reference_image_path, self._img_nrows, self._img_ncols)
+        self._combination_image = tf.Variable(self.preprocess_image(self._base_image_path, self._img_nrows, self._img_ncols))
 
         self._iterations = iterations
+
+
 
     def train(self):
         for i in range(1, self._iterations + 1):
@@ -87,10 +107,11 @@ class StyleTransfer:
             self._optimizer.apply_gradients([(grads, self._combination_image)])
             if i % 100 == 0:
                 print("Iteration %d: loss=%.2f" % (i, loss))
-                img = deprocess_image(self._combination_image.numpy(), self._img_nrows, self._img_ncols)
+                img = self.deprocess_image(self._combination_image.numpy(), self._img_nrows, self._img_ncols)
                 fname = self._result_prefix + "_at_iteration_%d.png" % i
-                keras.preprocessing.image.save_img(fname, img)
+                keras.preprocessing.image.save_img('api/'+fname, img)
                 self._hasResults = True
+
 
     def printResult(self, resultAt=4000):
         if not self._hasResults:
@@ -102,3 +123,5 @@ class StyleTransfer:
             return
 
         display(Image(self._result_prefix + f"_at_iteration_{resultAt}.png"))
+
+
