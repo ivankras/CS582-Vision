@@ -3,8 +3,9 @@ from tensorflow import keras
 from tensorflow.keras.applications import vgg19
 from IPython.display import Image, display
 import numpy as np
+tf.enable_eager_execution()
 
-from mlcode.losses import compute_loss_and_grads
+from api.mlcode.losses import compute_loss_and_grads
 class StyleTransfer:
     def __init__(self,
             base_image_name, base_image_url,

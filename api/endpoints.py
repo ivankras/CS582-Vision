@@ -1,5 +1,5 @@
 import os
-import service as service
+import api.service as service
 from flask import Flask, request, send_file
 from flask_cors import CORS, cross_origin
 

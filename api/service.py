@@ -1,4 +1,4 @@
-from mlcode.model import StyleTransfer
+from api.mlcode.model import StyleTransfer
 
 def train_and_get_result(urls):
     style_transfer_class = StyleTransfer(
