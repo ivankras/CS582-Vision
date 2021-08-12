@@ -49,9 +49,10 @@ function display_result(src) {
     parentNode.appendChild(img);
 }
 
-const axios = require('axios').default;
 
-export const file = () => {
+function request_server() {
+
+    const axios = require('axios').default;
 
     const first_url = document.getElementById("firstimgUrl").value
     const second_url = document.getElementById("secondimgUrl").value
