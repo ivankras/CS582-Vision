@@ -40,8 +40,11 @@ function addSecondImage(src) {
 
 function display_result(src) {
 
+    const urlCreator = window.URL || window.webkitURL;
+
     let img = document.createElement("img");
-    img.src = 'data:image/png;base64,'+src;
+    //img.src = 'data:image/png;base64,'+src;
+    img.src = urlCreator.createObjectURL(src);
     const parentNode = document.getElementById("preview_result");
     if (parentNode.children[0] != null) {
         parentNode.removeChild(parentNode.children[0]);
@@ -52,9 +55,9 @@ function display_result(src) {
 
 function request_server() {
 
-    const first_url = document.getElementById("firstimgUrl").value
-    const second_url = document.getElementById("secondimgUrl").value
-    const num_of_itr = document.getElementById("iterationRange").value
+    const first_url = document.getElementById("firstimgUrl").value;
+    const second_url = document.getElementById("secondimgUrl").value;
+    const num_of_itr = document.getElementById("iterationRange").value;
 
     axios.post('http://localhost:5000/api/getResult', {
         structure: first_url,
@@ -67,7 +70,7 @@ function request_server() {
         console.log(error);
     });
 
-};
+}
 
 
 
