@@ -1,5 +1,5 @@
 import os
-import api.service as service
+import service as service
 from flask import Flask, request, send_file
 from flask_cors import CORS, cross_origin
 
@@ -16,6 +16,14 @@ def getResult():
     urls = request.json
     return send_file(service.train_and_get_result(urls), mimetype='image/png')
 
+@app.route('/api/getDefault', methods=['POST'])
+@cross_origin()
+def getResult():
+    """
+    Get input image urls and return result of trained model
+    """
+    urls = request.json
+    return send_file(service.train_and_get_result(urls), mimetype='image/png')
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

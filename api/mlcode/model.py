@@ -3,9 +3,8 @@ from tensorflow import keras
 from tensorflow.keras.applications import vgg19
 from IPython.display import Image, display
 import numpy as np
-tf.enable_eager_execution()
 
-from api.mlcode.losses import compute_loss_and_grads
+from mlcode.losses import compute_loss_and_grads
 class StyleTransfer:
     def __init__(self,
             base_image_name, base_image_url,
@@ -25,7 +24,7 @@ class StyleTransfer:
         self._base_image_path = keras.utils.get_file(base_image_name, base_image_url)
         self._style_reference_image_path = keras.utils.get_file(self._style_image_name, self._style_image_url)
         self._result_prefix = result_prefix
-
+        print("*********" + self._base_image_path)
         # Weights of the different loss components
         self._total_variation_weight = total_variation_weight
         self._style_weight = style_weight
@@ -110,7 +109,7 @@ class StyleTransfer:
                 print("Iteration %d: loss=%.2f" % (i, loss))
                 img = self.deprocess_image(self._combination_image.numpy(), self._img_nrows, self._img_ncols)
                 fname = self._result_prefix + "_at_iteration_%d.png" % i
-                keras.preprocessing.image.save_img('api/'+fname, img)
+                keras.preprocessing.image.save_img('api/imgs/'+fname, img)
                 self._hasResults = True
 
 
