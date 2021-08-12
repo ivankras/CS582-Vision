@@ -41,7 +41,7 @@ function addSecondImage(src) {
 function display_result(src) {
 
     let img = document.createElement("img");
-    img.src = src;
+    img.src = 'data:image/png;base64,'+src;
     const parentNode = document.getElementById("preview_result");
     if (parentNode.children[0] != null) {
         parentNode.removeChild(parentNode.children[0]);
