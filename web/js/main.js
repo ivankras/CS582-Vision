@@ -38,18 +38,23 @@ function addSecondImage(src) {
 }
 
 
-function display_result(src) {
-
-    const urlCreator = window.URL || window.webkitURL;
-
-    let img = document.createElement("img");
-    //img.src = 'data:image/png;base64,'+src;
-    img.src = urlCreator.createObjectURL(src);
+function display_result() {
+    const num_of_itr = document.getElementById("iterationRange").value;
+    img =  document.createElement("img")
+    img.src = '../api/imgs/generated_at_iteration_' + num_of_itr + '.png'
     const parentNode = document.getElementById("preview_result");
-    if (parentNode.children[0] != null) {
-        parentNode.removeChild(parentNode.children[0]);
-    }
-    parentNode.appendChild(img);
+    parentNode.appendChild(img)
+    // const urlCreator = window.URL || window.webkitURL;
+
+    // let img = document.createElement("img");
+    // //img.src = 'data:image/png;base64,'+src;
+    // //img.src = 'data:image/png;base64,' + btoa(src.data);
+    // img.src = urlCreator.createObjectURL(src.data)
+    // const parentNode = document.getElementById("preview_result");
+    // if (parentNode.children[0] != null) {
+    //     parentNode.removeChild(parentNode.children[0]);
+    // }
+    // parentNode.appendChild(img);
 }
 
 
@@ -64,7 +69,7 @@ function request_server() {
         style: second_url,
         iters: num_of_itr
     }).then(function (response) {
-        console.log(response)
+        console.log(response.data)
         display_result(response);
     }).catch(function (error) {
         console.log(error);

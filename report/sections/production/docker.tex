@@ -1,5 +1,2 @@
 We used Conda to manage the development environment and requirements, which made dockerization very simple, our Dockerfile installs all the requirements from a text file that specifies the exact versions using PIP, then creates an image for the API and exposes the Flask server's ports to handle incoming requests.
-To do:
-\begin{itemize}
-    \item Enable GPU support within the container, accepting hardware and driver specs as parameters when building
-\end{itemize}
+We also used the nvidia CUDA image as our base to enable GPU support, we successfully deployed using this image but it is not behaving as expected, further tweaks are required.
