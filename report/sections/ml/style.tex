@@ -4,12 +4,11 @@ The theoretical basis for this work is given by \emph{"A Neural Algorithm of Art
 and our code is strongly influenced by the Keras library example on Neural Style Transfer\footnote{\href{https://keras.io/examples/generative/neural\_style\_transfer/}{https://keras.io/examples/generative/neural\_style\_transfer/}}.
 
 \subsection{Explanation}
-The implemented system uses a Convolutional Neural Network (CNN), optimizing three different loss functions, to separate and recombine the content of one arbitrary image and the style of another.\\
+The implemented system uses a Convolutional Neural Network (CNN), optimizing three different loss functions, to separate and recombine the content of one arbitrary image and the style of another.
 \subsubsection{Content Loss}
 While passing an image through a CNN, its representations become increasingly careful about its content,
 leaving aside the details about the actual value of each pixel, especially in higher layers of the network.\\
 Being specific, the content loss is a L2 (Euclidean) distance between the features of the base image (extracted from a deep layer of the CNN) and the features of the new image, keeping the generated image close enough to the original one.
-
 \subsubsection{Gram Matrix}
 Given a set $V$ of m vectors (points in $R^n$), the Gram matrix $G$ is the matrix of all possible inner products of $V$, i.e.,
 \begin{center}
@@ -34,9 +33,9 @@ From a most abstract level, our implementation consists of:
 For our experiment, we decide to use free-licensed images from Imgur\footnote{\href{https://imgur.com/}{https://imgur.com/}}.
 As a default (proven that it gives good results), we define the content weight to be lower than the style weight and the total variation weight:
 \begin{itemize}
-    \item $total_variation_weight = 0.000001$
-    \item $style_weight = 0.000001$
-    \item $content_weight = 0.000000025$
+    \item $total\_variation\_weight = 0.000001$
+    \item $style\_weight = 0.000001$
+    \item $content\_weight = 0.000000025$
 \end{itemize}
 \subsubsection{VGG-19}
 VGG\footnote{\href{https://arxiv.org/abs/1409.1556}{\emph{"Very Deep Convolutional Networks for Large-Scale Image Recognition", Simonyan \& Zisserman (2015):} https://arxiv.org/abs/1409.1556}}
